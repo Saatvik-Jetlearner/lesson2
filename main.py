@@ -1,28 +1,30 @@
 import pgzrun
 from random import randint
-from pgzero.builtins import Rect
 
+TITLE = "Great Shot"
 
+WIDTH = 500
+HEIGHT = 500
 
-HEIGHT = 300
-WIDTH = 300
-def draw(screen):
-    r = 255
-    g = 0
-    b = randint(100, 255)
+message = ""
 
-    height = HEIGHT
-    width = WIDTH - 200 
+alien = Actor("alien")
+def draw():
+    screen.clear()
+    screen.fill(color = (130, 0, 0))
+    alien.draw()
+    screen.draw.text(message, center = (400, 10), fontsize = 30)
 
-    for i in range(30):
-        rect = Rect((0, 0), (width, height))
-        rect.center = 150, 150
-        screen.draw.rect(rect, (r, g, b))
+def place_alien():
+    alien.x = randint(50, WIDTH - 50)
+    alien.y = randint(50, HEIGHT - 50)
 
-        r -= 10
-        g += 10
-
-        width -= 10
-        height += 10
-    
+def on_mouse_down(pos):
+    global message
+    if alien.collidepoint(pos):
+        message = "Great shot!"
+        place_alien()
+    else:
+        message = "You Missed!"
+place_alien()
 pgzrun.go()
