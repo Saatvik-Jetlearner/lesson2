@@ -1,30 +1,26 @@
-import pgzrun
-from random import randint
+matrix = [[1, 2, 3],[4, 5, 6],[7, 8, 9]]
+print(matrix)
+print(len(matrix))
+print(len(matrix[0]))
+print(matrix[1][2])
 
-TITLE = "Great Shot"
+for i in range(0, len(matrix)):
+    for j in range(0, len(matrix[0])):
+        print(matrix[i][j], end = " ")
+    print("\n")
 
-WIDTH = 500
-HEIGHT = 500
+rows = int(input("Enter number of rows - "))
+columns = int(input("Enter number of columns - "))
+matrix = []
 
-message = ""
+for i in range(rows):
+    temp = []
+    for j in range(columns):
+        x = int(input("Enter your element - "))
+        temp.append(x)
+        matrix.append(temp)
 
-alien = Actor("alien")
-def draw():
-    screen.clear()
-    screen.fill(color = (130, 0, 0))
-    alien.draw()
-    screen.draw.text(message, center = (400, 10), fontsize = 30)
-
-def place_alien():
-    alien.x = randint(50, WIDTH - 50)
-    alien.y = randint(50, HEIGHT - 50)
-
-def on_mouse_down(pos):
-    global message
-    if alien.collidepoint(pos):
-        message = "Great shot!"
-        place_alien()
-    else:
-        message = "You Missed!"
-place_alien()
-pgzrun.go()
+for i in range(rows):
+    for j in range(columns):
+        print(matrix[i][j], end = " ")
+    print("\n")
