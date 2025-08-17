@@ -1,26 +1,52 @@
-matrix = [[1, 2, 3],[4, 5, 6],[7, 8, 9]]
-print(matrix)
-print(len(matrix))
-print(len(matrix[0]))
-print(matrix[1][2])
+import pgzrun
+from random import randint
 
-for i in range(0, len(matrix)):
-    for j in range(0, len(matrix[0])):
-        print(matrix[i][j], end = " ")
-    print("\n")
+WIDTH = 600
+HEIGHT = 500
 
-rows = int(input("Enter number of rows - "))
-columns = int(input("Enter number of columns - "))
-matrix = []
+score = 0  
+game_over = False
 
-for i in range(rows):
-    temp = []
-    for j in range(columns):
-        x = int(input("Enter your element - "))
-        temp.append(x)
-        matrix.append(temp)
+bee = Actor("bee")
+bee.pos = 100,100
 
-for i in range(rows):
-    for j in range(columns):
-        print(matrix[i][j], end = " ")
-    print("\n")
+flower = Actor("flower")
+flower.pos = 200,200
+
+def draw():
+    screen.blit("background", (0, 0))
+    bee.draw()
+    flower.draw()
+    screen.draw.text("Score: " + str(score), (10, 10))
+    if game_over:
+        screen.draw.text("Times Up! Your Final Score: " + str(score), fontsize = 40, color = "red")
+
+def place_flower():
+    flower.x = randint(70, WIDTH-70)
+    flower.y = randint(70, HEIGHT-70)
+
+def time_up():
+    global game_over
+    game_over = True
+def update():
+    global score
+
+    if keyboard.left:
+        bee.x = bee.x - 2
+    if keyboard.right:
+        bee.x = bee.x + 2
+    if keyboard.up:
+        bee.y = bee.y - 2
+    if keyboard.down:
+        bee.y = bee.y + 2
+
+    flower_collected = bee.colliderect(flower)  
+
+    if flower_collected:
+        score = score + 10
+        place_flower()
+
+clock.schedule(time_up, 60.0)
+
+
+pgzrun.go()
