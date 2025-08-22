@@ -1,52 +1,29 @@
-import pgzrun
-from random import randint
-
-WIDTH = 600
-HEIGHT = 500
-
-score = 0  
-game_over = False
-
-bee = Actor("bee")
-bee.pos = 100,100
-
-flower = Actor("flower")
-flower.pos = 200,200
-
-def draw():
-    screen.blit("background", (0, 0))
-    bee.draw()
-    flower.draw()
-    screen.draw.text("Score: " + str(score), (10, 10))
-    if game_over:
-        screen.draw.text("Times Up! Your Final Score: " + str(score), fontsize = 40, color = "red")
-
-def place_flower():
-    flower.x = randint(70, WIDTH-70)
-    flower.y = randint(70, HEIGHT-70)
-
-def time_up():
-    global game_over
-    game_over = True
-def update():
-    global score
-
-    if keyboard.left:
-        bee.x = bee.x - 2
-    if keyboard.right:
-        bee.x = bee.x + 2
-    if keyboard.up:
-        bee.y = bee.y - 2
-    if keyboard.down:
-        bee.y = bee.y + 2
-
-    flower_collected = bee.colliderect(flower)  
-
-    if flower_collected:
-        score = score + 10
-        place_flower()
-
-clock.schedule(time_up, 60.0)
+stuDetails = ("Surabhi", 89)
+address = ('227', 'Brickfield Shelters', 'Bangalore', 'Karnataka', '562107')
+for x in address:
+    print(x, end = ' ')
+houseno, apartName, city, state, pin = address
+print()
+print('HNO:', houseno)
+print('APT NO ', apartName)
+print(city)
+print(state)
+print(pin)
+my_tuple = 3, 4.6, "dog"
+print(my_tuple)
+n_tuple = ("mouse", [8, 4, 6], (1, 2, 3))
+print(n_tuple[0][3])
+print(n_tuple[1][1])
+my_tuple = ('p', 'r', 'o', 'g', 'r', 'a', 'm', 'i', 'z')
+print(my_tuple[1:4])
+print(my_tuple[:-7])
+print(my_tuple[7:])
+my_tuple = (4, 2, 3, [6, 5])
+my_tuple[3][0] = 9
+print(my_tuple)
+my_tuple = ('p', 'r', 'o', 'g', 'r', 'a', 'm', 'i', 'z')
+print(my_tuple)
 
 
-pgzrun.go()
+
+
