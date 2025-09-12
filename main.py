@@ -11,6 +11,8 @@ START_SPEED = 10
 ITEMS = ["bag", "battery", "bottle", "chips"]
 
 
+
+
 game_over = False
 game_complete = False
 current_level = 1
@@ -19,7 +21,7 @@ animations = []
 def draw():
     global items, current_level, game_over, game_complete
     screen.clear()
-    screen.blit("background", (0, 0))
+    screen.blit("backgroundimg", (0, 0))
     if game_over:
         display_message("GAME OVER", "Try again")  
     elif game_complete:
@@ -60,7 +62,7 @@ def animate_items(items_to_animate):
     for item in items_to_animate:
         duration = START_SPEED - current_level
         item.anchor = ("center", "bottom")
-        animation = animate(item, duration=duration, on_finished=handled_game_over, y=HEIGHT)
+        animation = animate(item, duration=duration, on_finished=handle_game_over, y=HEIGHT)
         animations.append(animation)
 def handle_game_over():
     global game_over
@@ -86,6 +88,7 @@ def handle_game_complete():
 def stop_animations(animations_to_stop):
     global current_level, items, animations, game_complete  
     stop_animations(animations)
+    
     if current_level == FINAL_LEVEL:
         game_complete = True
     else:
