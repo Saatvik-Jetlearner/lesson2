@@ -1,106 +1,128 @@
 import pgzrun
-import random
-FONT_option = (255, 255, 255)
-WIDTH = 800
-HEIGHT = 600
-CENTRE_X = WIDTH / 2
-CENTRE_Y = HEIGHT / 2
-CENTRE = (CENTRE_X, CENTRE_Y)
-FINAL_LEVEL = 6
-START_SPEED = 10
-ITEMS = ["bag", "battery", "bottle", "chips"]
 
+TITLE = "Quiz Master"
+WIDTH = 870
+HEIGHT = 650
 
+marquee_box = Rect(0,0,880,80)
+question_box = Rect(0,0,650,150)
+timer_box = Rect(0,0,150,150)
+answer_box1 = Rect(0,0,300,150)
+answer_box2 = Rect(0,0,300,150)
+answer_box3 = Rect(0,0,300,150)
+answer_box4 = Rect(0,0,300,150)
+skip_box = Rect(0,0,150,330)
 
+score = 0
+time_left = 10
+question_file_name = "questions.txt"
+marquee_message = ""
+is_game_over = False
 
-game_over = False
-game_complete = False
-current_level = 1
-items = []
-animations = []
+answer_boxes = [answer_box1, answer_box2, answer_box3, answer_box4]
+questions = []
+question_count = 0
+question_index = 0
+
+marquee_box.move_ip(0,0)
+question_box.move_ip(20,100)
+timer_box.move_ip(700,100)
+answer_box1.move_ip(20,270)
+answer_box2.move_ip(370,270)
+answer_box3.move_ip(20,450)
+answer_box4.move_ip(370,450)
+skip_box.move_ip(700,270)
+
 def draw():
-    global items, current_level, game_over, game_complete
-    screen.clear()
-    screen.blit("backgroundimg", (0, 0))
-    if game_over:
-        display_message("GAME OVER", "Try again")  
-    elif game_complete:
-        display_message("YOU WON!", "Congratulations")
-    else:
-        for item in items:
-            item.draw()
-def update():
-    global items
-    if len(items) == 0:
-        items = make_items(current_level)
-def make_items(number_of_extra_items):
-    items_to_create = get_option_to_create(number_of_extra_items)
-    new_items = create_items(items_to_create)
-    layout_items(new_items)
-    animate_items(new_items)
-    return new_items
-def get_option_to_create(number_of_extra_items):
-    items_to_create = ["paper"]
-    for i in range(0, number_of_extra_items):
-        items_to_create.append(random.choice(ITEMS))
-    return items_to_create
-def create_items(items_to_create):
-    new_items = []
-    for option in items_to_create:
-        new_item = Actor(option + "img")
-        new_items.append(new_item)
-    return new_items
-def layout_items(items_to_layout):
-    number_of_gaps = len(items_to_layout) + 1
-    gap_size = WIDTH / number_of_gaps
-    random.shuffle(items_to_layout)
-    for index, item in enumerate(items_to_layout):
-        new_x_pos = (index + 1) * gap_size
-        item.x = new_x_pos
-def animate_items(items_to_animate):
-    global animations
-    for item in items_to_animate:
-        duration = START_SPEED - current_level
-        item.anchor = ("center", "bottom")
-        animation = animate(item, duration=duration, on_finished=handle_game_over, y=HEIGHT)
-        animations.append(animation)
-def handle_game_over():
-    global game_over
-    game_over = True
-def on_mouse_down(pos):
-    global items, current_level
-    for item in items:
-        if item.collidepoint(pos):
-            if "paper" in item.image:
-                handle_game_complete()
-            else:
-                handle_game_over()
-def handle_game_complete():
-    global current_level, items, animations, game_complete
-    stop_animations(animations)
-    if current_level == FINAL_LEVEL:
-        game_complete = True
-    else:
-        current_level += 1
-        items = []
-        animations = []
+    global marquee_message
+    screen_clear()
+    screen.fill(color = "black")
+    screen.draw.filled_rect(marquee_box, "black")
+    screen.draw.filled_rect(question_box, "navy blue")
+    screen.draw.filled_rect(timer_box, "navy blue")
+    screen.draw.filled_rect(skip_box, "dark green")
+    for answer_box in answer_boxes:
+        screen.draw.filled_rect(answer_box, "dark orange")
+    marquee_message = "Welcome to Quiz Master..." 
+    marquee_message = marquee_message + f"Q: {question_index} of {question_count}"
+    screen.draw.textbox(marquee_message, marquee_box, color = "white")
+    screen.draw.textbox(
+        str(time_left), timer_box,
+        color = "white", shadow = (0.5, 0.5),
+        scolor = "dim gray"
+    )
+    screen.draw.textbox(
+        "Skip", skip_box,
+        color = "black", angle = 90
+    )
+    screen.draw.textbox(
+        question[0].strip(), question_box,
+        color = "white", shadow = (0.5, 0.5),
+        scolor = "dim gray"
+    )
+    index = 1
+    for answer_box in answer_boxes:
+        screen.draw.textbox(question[index].strip(), answer_box, color = "black")
+        index = index + 1
 
-def stop_animations(animations_to_stop):
-    global current_level, items, animations, game_complete  
-    stop_animations(animations)
-    
-    if current_level == FINAL_LEVEL:
-        game_complete = True
+def update():
+    move_marquee()
+def move_marquee():
+    marquee_box.x = marquee_box.x - 2
+    if marquee_box.right < 0:
+        marquee_box.left = WIDTH
+def read_question_file():
+    global questions, question_count
+    q_file = open(question_file_name, "r")
+    for question in q_file:
+        questions.append(question)
+        question_count = question_count + 1
+    q_file.close()
+def read_next_question():
+    global question, question_index, time_left, is_game_over
+    question_index = question_index + 1
+    return questions.pop(0).split(",")
+def on_mouse_down(pos):
+    index = 1
+    for box in answer_boxes:
+        if box.collidepoint(pos):
+            if index == int(question[5]):
+                correct_answer()
+            else:
+                game_over()
+        index = index + 1
+    if skip_box.collidepoint(pos):
+        skip_question()
+def correct_answer():
+    global score, question, time_left, questions
+    score = score + 1
+    if questions:
+        question = read_next_question()
+        time_left = 10
     else:
-        current_level += 1
-        items = []
-        animations = []
-def stop_animations(animations_to_stop):
-    for animation in animations_to_stop:
-        if animation.running:
-            animation.stop()
-def display_message(heading_text, sub_heading_text):
-    screen.draw.text(heading_text, fontsize = 60, center=CENTRE, color="white")
-    screen.draw.text(sub_heading_text, fontsize = 30, center=(CENTRE_X, CENTRE_Y + 30), color="white")
+        game_over()
+def game_over():
+    global is_game_over, time_left, question
+    message = f"Game Over!\nYou got {score} questions correct!"
+    question = [message, "-", "-", "-", "-", 5]
+    time_left = 0
+    is_game_over = True
+def skip_question():
+    global question, time_left, questions
+    if questions:
+        question = read_next_question()
+        time_left = 10
+    else:
+        game_over()
+def update_time_left():
+    global time_left 
+    if time_left:
+        time_left = time_left - 1
+    else:
+        game_over()
+
+read_question_file()
+question = read_next_question()
+clock.schedule_interval(update_time_left, 1)
 
 pgzrun.go()
