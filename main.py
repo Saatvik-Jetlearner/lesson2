@@ -1,64 +1,50 @@
-import pgzrun
-from random import randint
+import pygame
 
-TITLE = "Flappy Ball"
-WIDTH = 800 
-HEIGHT = 600
+pygame.init()
+screen = pygame.display.set_mode([500,500])
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
+white = (255, 255, 255)
+yellow = (255, 255, 0)
+black = (0, 0, 0)
+screen.fill(white)
 
-R = randint(0,255)
-G = randint(0,255)
-B = randint(0,255)
-
-CLR = R,G,B
-
-GRAVITY = 2000.0
-
-class Ball:
-    def _init_(self, initial_x, initial_y):
-        self.x = initial_x
-        self.y = initial_y
-        self.vx = 200
-        self.vy = 0
-        self.radius = 40
+class myCircle():
+    def _init_(self, color, pos, rad, wid=0):
+        self.color = color
+        self.pos = pos
+        self.rad = rad
+        self.wid = wid
+        self.scrn = screen
     
     def draw(self):
-        pos = (self.x, self.y)
-        screen.draw.filled_circle(pos, self.radius, CLR)
+        pygame.draw.circle(self.scrn, self.color, self.pos, self.rad, self.wid ) 
+    def grow(self, x):
+        self.rad += x
+        pygame.draw.circle(self.scrn, self.color, self.pos, self.rad, self.wid )
 
-ball1 = Ball(50,100)
+position = (300,300)
+radius = 50
+wid = 2
+pygame.draw.circle(screen, red, position, radius, wid )
+pygame.display.update()
 
-def draw():
-    screen.clear()
-    ball1.draw()
-    ball2.draw()
+blueCircle = myCircle(blue, position, radius+60)
+redCircle = myCircle(red, position, radius+40)
+yellowCircle = myCircle(yellow, position, radius, 5)
+greenCircle = myCircle(green, position, 20)
 
-def update(dt):
-    uy = ball1.vy
-    ball1.vy += GRAVITY * dt
-    ball1.y += (uy + ball1.vy) * 0.5 * dt
-    #uy = ball2.vy
-    #ball2.vy += GRAVITY * dt
-    #ball2.y += (uy + ball2.vy) * 0.5 * dt    
-
-    if ball1.y > HEIGHT - ball1.radius:
-        ball1.y = HEIGHT - ball1.radius
-        ball1.vy = -ball1.vy * 0.9
-
-    #if ball2.y > HEIGHT - ball2.radius:
-    #    ball2.y = HEIGHT - ball2.radius
-     #   ball2.vy = -ball1.vy * 0.9
-
-    ball1.x += ball1.vx + dt
-    if ball1.x > WIDTH - ball1.radius or ball1.x < ball1.radius:
-        ball1.vx = -ball1.vx  
-    #ball2.x += ball2.vx + dt
-    #if ball2.x > WIDTH - ball2.radius or ball2.x < ball2.radius:
-    #    ball2.vx = -ball2.vx  
-
-def on_key_down(key):
-    """Pressing a key kicks the ball up"""
-    if key == keys.SPACE:
-        ball1.vy = -500
-    #    ball2.vy = -500
-
-pgzrun.go()
+while(1):
+    for event in pygame.event.get():
+        if (event.type == pygame.MOUSEBUTTONDOWN):
+            blueCircle.draw()
+            redCircle.draw()
+            yellowCircle.draw()
+            greenCircle.draw()
+            pygame.display.update()
+        elif (event.type == pygame.MOUSEBUTTONUP):
+            pos = pygame.mouse.get_pos()
+            blackCircle = myCircle(black, pos, 5)
+            blackCircle.draw()
+            pygame.display.update()
