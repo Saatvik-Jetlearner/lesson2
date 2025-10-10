@@ -1,55 +1,24 @@
 import pygame
+import time
 
 pygame.init()
-screen = pygame.display.set_mode([500,500])
-red = (255, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 255)
-white = (255, 255, 255)
-yellow = (255, 255, 0)
-black = (0, 0, 0)
-screen.fill(white)
 
-class myCircle():
-    def _init_(self, color, pos, rad, wid=0):
-        self.color = color
-        self.pos = pos
-        self.rad = rad
-        self.wid = wid
-        self.scrn = screen
+WIDTH = 600
+HEIGHT = 800
 
-    def draw(self):
-        pygame.draw.circle(self.scrn, self.color, self.pos, self.rad, self.wid ) 
-    def grow(self, x):
-        self.rad += x
-        pygame.draw.circle(self.scrn, self.color, self.pos, self.rad, self.wid )
+display_surface = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Birthday Greeting Card")
 
-position = (300,300)
-radius = 50
-wid = 2
-pygame.draw.circle(screen, red, position, radius, wid )
-pygame.display.update()
+img = pygame.image.load("backgroundone.jpg")
+image = pygame.transform.scale(img, (WIDTH, HEIGHT))
 
-blueCircle = myCircle(blue, position, radius+60)
-redCircle = myCircle(red, position, radius+40)
-yellowCircle = myCircle(yellow, position, radius, 5)
-greenCircle = myCircle(green, position, 20)
-
-while(1):
-    for event in pygame.event.get():
-        if (event.type == pygame.MOUSEBUTTONDOWN):
-            blueCircle.draw()
-            redCircle.draw()
-            yellowCircle.draw()
-            greenCircle.draw()
-            pygame.display.update()
-        elif (event.type == pygame.MOUSEBUTTONUP):
-            pos = pygame.mouse.get_pos()
-            blackCircle = myCircle(black, pos, 5)
-            blackCircle.draw()
-            pygame.display.update()
-        elif (event.type == pygame.MOUSEMOTION):
-            pos = pygame.mouse.get_pos()
-            blackCircle = myCircle(black, pos, 5)
-            blackCircle.draw()
-            pygame.display.update()
+while(True):
+    font = pygame.font.SysFont("Times New Roman", 72)
+    text = font.render("Happy", True(0,0,0))
+    text2 = font.render("Birthday", True(0,0,0))
+    display_surface.fill((255, 255, 255))
+    display_surface.blit(image, (0,0))
+    display_surface.blit(text, (210,180))
+    display_surface.blit(text2, (180,264))
+    pygame.display.update()
+    time.sleep(2)
