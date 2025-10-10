@@ -17,7 +17,7 @@ class myCircle():
         self.rad = rad
         self.wid = wid
         self.scrn = screen
-    
+
     def draw(self):
         pygame.draw.circle(self.scrn, self.color, self.pos, self.rad, self.wid ) 
     def grow(self, x):
@@ -44,6 +44,11 @@ while(1):
             greenCircle.draw()
             pygame.display.update()
         elif (event.type == pygame.MOUSEBUTTONUP):
+            pos = pygame.mouse.get_pos()
+            blackCircle = myCircle(black, pos, 5)
+            blackCircle.draw()
+            pygame.display.update()
+        elif (event.type == pygame.MOUSEMOTION):
             pos = pygame.mouse.get_pos()
             blackCircle = myCircle(black, pos, 5)
             blackCircle.draw()
