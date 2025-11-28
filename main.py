@@ -1,37 +1,55 @@
 import pygame
+
 pygame.init()
-screen = pygame.display.set_mode((600, 600))
-screen.fill((255, 255, 255))
-pygame.display.update()
-subway_surfer = pygame.image.load("subwaysurfers.png")
-roblox = pygame.image.load("roblox.png")
-minecraft = pygame.image.load("minecraft.png")
-clashroyale = pygame.image.load("clashroyale.png")
-screen.blit(subway_surfer, (150, 100))
-screen.blit(roblox, (150, 200))
-screen.blit(minecraft, (150, 300))
-screen.blit(clashroyale, (150, 400))
-font = pygame.font.SysFont("Times New Roman", 36)
-text = font.render("Roblox", True, (0, 0, 0))
-text1 = font.render("Clash Royale", True, (0, 0, 0))
-text2 = font.render("Subway Surfers", True, (0, 0, 0))
-text3 = font.render("Minecraft", True, (0, 0, 0))
-screen.blit(text, (350, 100))
-screen.blit(text1, (350, 200))
-screen.blit(text2, (350, 300))
-screen.blit(text3, (350, 400))
-pygame.display.update()
+pygame.display.set_caption("Rocket in Space")
+screen_width = 700
+screen_height = 500
+screen = pygame.display.set_mode([screen_width, screen_height])
 
-while 1:
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("rocket.jpg").convert_alpha()
+        self.background = pygame.image.load("bg.jpg").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (70, 100))
+        self.background = pygame.transform.scale(self.background, (700, 500))
+        self.rect = self.image.get_rect()
+    def update(self, pressed_keys):
+        if pressed_keys[pygame.K_UP]:
+            self.rect.move_ip(0, -1)
+        if pressed_keys[pygame.K_DOWN]:
+            self.rect.move_ip(0, 1)
+        if pressed_keys[pygame.K_LEFT]:
+            self.rect.move_ip(-1, 0)
+        if pressed_keys[pygame.K_RIGHT]:
+            self.rect.move_ip(1, 0)
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > screen_width:
+            self.rect.right = screen_width
+        if self.rect.top <= 0:
+            self.rect.top = 0
+        if self.rect.bottom >= screen_height:
+            self.rect.bottom = screen_height
 
-    event = pygame.event.poll()
-    if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            pygame.draw.circle(screen, (100, 100, 0), (pos), 20, 0)
-            pygame.display.update()
-    elif event.type == pygame.MOUSEBUTTONUP:
-            pos1 = pygame.mouse.get_pos()
-            pygame.draw.line(screen, (100, 100, 0), (pos), (pos1), 5)
-            pygame.draw.circle(screen, (0, 0, 255), (pos1), 20, 0)
-            pygame.display.update()
+sprites = pygame.sprite.Group()
+
+def startgame():
+    player = Player()
+    sprites.add(player)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit(0)
+
+        pressed_keys = pygame.key.get_pressed()
+        player.update(pressed_keys)
+
+        screen.blit(pygame.image.load("bg.jpg"), (0, 0))
+        sprites.draw(screen)
+        pygame.display.update()
+
+startgame()
 
