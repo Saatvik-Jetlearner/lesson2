@@ -1,0 +1,20 @@
+from tkinter import *
+
+order = Tk()
+order.title("Food Order Form")
+order.geometry("600x600")
+order.configure(bg="red")
+
+email = Label(order, text="Email:", bg="red", fg="black", font=("Arial", 12)).place(x=50, y=50)
+email_entry = Entry(order, width=30).place(x=150, y=50)
+password = Label(order, text="Password:", bg="red", fg="black", font=("Arial", 12)).place(x=50, y=100)
+password_entry = Entry(order, width=30, show="*").place(x=150, y=100)
+entree = Label(order, text="Enter your order:Chicken Sandwich, B.L.T., Veg sandwich, or None", bg="red", fg="black", font=("Arial", 12)).place(x=20, y=150)
+order_entry = Entry(order, width=30).place(x=50, y=200)
+quantity = Entry(order, width=30).place(x=450, y=200)
+drink = Label(order, text="Drink: Coke, Diet Coke, Sprite, Fanta, Water or None", bg="red", fg="black", font=("Arial", 12)).place(x=20, y=300)
+drink_quantity = Entry(order, width=30).place(x=450, y=300)
+dessert = Label(order, text="Dessert: Ice Cream, Cake, Pie, or None", bg="red", fg="black", font=("Arial", 12)).place(x=20, y=400)
+dessert_quantity = Entry(order, width=30).place(x=450, y=400)
+submit = Button(order, text="Submit Order", bg="white", fg="black", font=("Arial", 12)).place(x=250, y=500)
+order.mainloop()
