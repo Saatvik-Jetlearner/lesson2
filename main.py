@@ -1,13 +1,41 @@
-from tkinter import *
+import cv2
+import numpy as np
 
-root = Tk()
 
-root.geometry("100x100")
+image = cv2.imread('dog.png')
 
-button = Button(root, text="Click Me", bd = "5", background="cyan", command=root.destroy)
-button2 = Button(root, text="Click Me", bd = "5", background="green", command=root.destroy)
+if image is None:
+    print("Error: Could not read the image.")
+    exit()
 
-button.pack(side="right")
-button2.pack(side="top")
+cv2.imshow('Dog Image', image)
 
-root.mainloop()
+cv2.imwrite('saved_image.png', image)
+
+gray_image = cv2.imread('dog.png', cv2.IMREAD_GRAYSCALE)
+cv2.imshow('Gray Dog Image', gray_image)
+
+
+blue, green, red = cv2.split(image)
+zeros = np.zeros_like(blue)
+
+cv2.imshow('Blue Channel', cv2.merge([blue, zeros, zeros]))
+cv2.imshow('Green Channel', cv2.merge([zeros, green, zeros]))
+cv2.imshow('Red Channel', cv2.merge([zeros, zeros, red]))
+
+"""
+
+cv2.imread(path) -> Reads an image (default = BGR format)
+
+cv2.imshow(window_name, image) -> Displays an image in a window
+
+cv2.imwrite(filename, image) -> Saves an image to disk
+
+cv2.IMREAD_GRAYSCALE -> Reads the image in grayscale
+
+cv2.split(image) -> Splits the image into Blue, Green, and Red channels
+
+"""
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
