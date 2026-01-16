@@ -13,7 +13,14 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 
-import cv2
+image = cv2.imread('dog.png')
+resized_image = cv2.resize(image, (400, 400))
+cv2.imshow('Resized Dog Image', resized_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
 
 img = cv2.imread('dog.png')
 (row, col) = img.shape[:2]
@@ -26,7 +33,7 @@ cv2.imshow('Grayscale Image', img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-import cv2
+
 img = cv2.imread("dog.png")
 (rows, cols) = img.shape[:2]
 M = cv2.getRotationMatrix2D((cols / 2, rows / 2), 45, 1)
@@ -34,7 +41,7 @@ res = cv2.warpAffine(img, M, (cols, rows))
 
 cv2.imwrite('result.jpg', res)
 
-import cv2
+
 img = cv2.imread('dog.png')
 
 edges = cv2.Canny(img, 100, 200)
@@ -42,7 +49,6 @@ edges = cv2.Canny(img, 100, 200)
 cv2.imwrite('result.jpg', edges)
 
 
-import cv2
 img = cv2.imread('dog.png')
 
 hsvImage = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
