@@ -1,20 +1,8 @@
-from tkinter import *
+import cv2
 
-details = Tk()
-details.title("User Details Form")
-details.geometry("500x500")
-details.config(background="lightblue")
+image = cv2.imread('landscape.jpg')
 
-first_name_details = Label(details, text="First Name:").place(x=40, y=60)
-first_name_input = Entry(details, width=30).place(x=110, y=60)
-
-age_details = Label(details, text="Age:").place(x=40, y=100)
-age_input = Entry(details, width=30).place(x=110, y=100)
-
-city_details = Label(details, text="City:").place(x=40, y=140)
-city_input = Entry(details, width=30).place(x=110, y=140)
-
-submit_button = Button(details, text="Submit").place(x=40, y=180)
-clear_button = Button(details, text="Clear").place(x=100, y=180)
-
-details.mainloop()
+cv2.addWeighted(image, 0.2, image, 0.8, 50, image)
+cv2.imshow('Brightened Image', image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()

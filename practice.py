@@ -1,12 +1,21 @@
-from tkinter import *
+import cv2
 
-name = Tk()
-name.title("Name")
-name.geometry("500x500")
-name.config(background="lightblue")
+image = cv2.imread('landscape.jpg')
+cv2.imshow('Landscape Image', image)
+cv2.waitKey(0)
 
-label_name = Label(name, text="Enter Your Name:").place(x=50, y=80)
-label_name_input = Entry(name, width=40).place(x=150, y=80)
-submit_name_button = Button(name, text="Submit").place(x=200, y=120)
+gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+cv2.imshow('Gray Landscape Image', gray_image)
+cv2.imwrite('landscape_gray.jpg', gray_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
-name.mainloop()
+
+hsvImage = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+cv2.imshow('HSV Image', hsvImage)
+cv2.imwrite('landscape_hsv.jpg', hsvImage)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
