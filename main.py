@@ -1,59 +1,56 @@
-#Refer - https://www.geeksforgeeks.org/opencv-python-tutorial/
-
+import os
+from tkinter import Image
 import cv2
 
-image = cv2.imread('dog.png')
-cv2.imshow('Dog Image', image)
-cv2.waitKey(0)
 
-gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-cv2.imshow('Gray Dog Image', gray_image)
+os.chdir("C:Documents\\JetLearn Code\\OpenCV\\Lesson 8\\images")
+path = "C:Documents\\JetLearn Code\\OpenCV\\Lesson 8\\images"
 
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+mean_height = 0
+mean_width = 0
 
+num_of_images = len(os.listdir('.'))
 
-image = cv2.imread('dog.png')
-resized_image = cv2.resize(image, (400, 400))
-cv2.imshow('Resized Dog Image', resized_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+for file in os.listdir('.'):
+    img = Image.open(os.path.join(path, file))
+    width, height = img.size
+    mean_width = mean_width + width
+    mean_height = mean_height + height
+    
+mean_width = mean_width / num_of_images
+mean_height = mean_height / num_of_images
 
+print(mean_width)
+print(mean_height)
 
+for file in os.listdir('.'):
+    img = Image.open(os.path.join(path, file))
+    width, height = img.size
+    print(width, height)
 
+    imgResized = img.resize((int(mean_width), int(mean_height)), Image.ANTIALIAS)
+    imgResized.save(file, 'JPEG', quality=95)
+    print(img.filename.split("\\")[-1] + " is resized")
 
-img = cv2.imread('dog.png')
-(row, col) = img.shape[:2]
+def videoGenerator():
+    video_name = "MyFirstVideo.avi"
 
-for i in range(row):
-    for j in range(col):
-        img[i, j] = sum(img[i, j]) * 0.33
+    os.chdir("C:Documents\\JetLearn Code\\OpenCV\\Lesson 8\\images")
 
-cv2.imshow('Grayscale Image', img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    images = []
+    for img in os.listdir('.'):
+        if img.endswith(".jpg") or img.endswith(".jpeg") or img.endswith("png"):
+            images.append(img)
 
+    print(images)
 
-img = cv2.imread("dog.png")
-(rows, cols) = img.shape[:2]
-M = cv2.getRotationMatrix2D((cols / 2, rows / 2), 45, 1)
-res = cv2.warpAffine(img, M, (cols, rows))
+    frame = cv2.imread(os.path.join(".", images[0]))
+    height, width, layers = frame.shape
+    video = cv2.VideoWriter(video_name, 0, 1, (width, height))
+    for image in images:
+        video.write(cv2.imread(os.path.join(".", image)))
 
-cv2.imwrite('result.jpg', res)
+    cv2.destroyAllWindows()
+    video.release()
 
-
-img = cv2.imread('dog.png')
-
-edges = cv2.Canny(img, 100, 200)
-
-cv2.imwrite('result.jpg', edges)
-
-
-img = cv2.imread('dog.png')
-
-hsvImage = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
-cv2.imshow('HSV Image', hsvImage)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
+videoGenerator()
