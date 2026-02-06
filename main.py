@@ -3,8 +3,8 @@ from tkinter import Image
 import cv2
 
 
-os.chdir("C:Documents\\JetLearn Code\\OpenCV\\Lesson 8\\images")
-path = "C:Documents\\JetLearn Code\\OpenCV\\Lesson 8\\images"
+os.chdir("C:\\JetLearn Code\\OpenCV\\Lesson 8\\images")
+path = "C:\\JetLearn Code\\OpenCV\\Lesson 8\\images"
 
 mean_height = 0
 mean_width = 0
@@ -35,7 +35,7 @@ for file in os.listdir('.'):
 def videoGenerator():
     video_name = "MyFirstVideo.avi"
 
-    os.chdir("C:Documents\\JetLearn Code\\OpenCV\\Lesson 8\\images")
+    os.chdir("C:\\JetLearn Code\\OpenCV\\Lesson 8\\images")
 
     images = []
     for img in os.listdir('.'):
