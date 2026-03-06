@@ -1,0 +1,22 @@
+import cv2
+image = cv2.imread("download.png")
+
+color = (0, 0, 255)
+color2 = (0, 255, 255)
+color3 = (0, 255, 0)
+black = (0, 0, 0)
+
+thickness = 100
+
+rectangle1 = cv2.line(image, (350, 150), (400, 150), black, thickness)
+rectangle2 = cv2.line(image, (350, 150), (350, 250), black, thickness)
+rectangle3 = cv2.line(image, (400, 150), (400, 250), black, thickness)
+rectangle4 = cv2.line(image, (350, 250), (400, 250), black, thickness)
+cv2.circle(image, (375, 150), 20, color, -1)
+cv2.circle(image, (375, 200), 20, color2, -1)
+cv2.circle(image, (375, 250), 20, color3, -1)
+
+
+cv2.imshow("Traffic Light", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()

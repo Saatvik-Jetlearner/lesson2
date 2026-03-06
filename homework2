@@ -1,0 +1,17 @@
+import cv2
+
+person = cv2.imread("person.jpg")
+
+black = (0,0,0)
+thickness = 9
+
+
+rectangle1 = cv2.line(person, (350, 150), (400, 150), black, thickness)
+rectangle2 = cv2.line(person, (350, 150), (350, 250), black, thickness)
+rectangle3 = cv2.line(person, (400, 150), (400, 250), black, thickness)
+rectangle4 = cv2.line(person, (350, 250), (400, 250), black, thickness)
+
+
+cv2.imshow("Person", person)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
