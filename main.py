@@ -1,56 +1,29 @@
-import os
-from tkinter import Image
-import cv2
+class school:
+    def __init__(self, name, grade, school_name):
+        self.name = name
+        self.grade = grade
+        self.school_name = school_name
 
-
-os.chdir("C:\\JetLearn Code\\OpenCV\\Lesson 8\\images")
-path = "C:\\JetLearn Code\\OpenCV\\Lesson 8\\images"
-
-mean_height = 0
-mean_width = 0
-
-num_of_images = len(os.listdir('.'))
-
-for file in os.listdir('.'):
-    img = Image.open(os.path.join(path, file))
-    width, height = img.size
-    mean_width = mean_width + width
-    mean_height = mean_height + height
+    def get_name(self):
+        return self.name
+    def set_name(self, name):
+        self.name = name
+    def get_grade(self):
+        return self.grade
+    def get_school_name(self):
+        return self.school_name
     
-mean_width = mean_width / num_of_images
-mean_height = mean_height / num_of_images
+    def showStudent(self):
+        print("Hello, I am a student named {}, in grade {}, attending {}".format(self.name, self.grade, self.school_name))
 
-print(mean_width)
-print(mean_height)
+student1 = school("Jack", "10th", "Greenwood High")
+student1.showStudent()
+print(student1.get_name())
 
-for file in os.listdir('.'):
-    img = Image.open(os.path.join(path, file))
-    width, height = img.size
-    print(width, height)
+student1.set_name("John")
+student1.showStudent()
 
-    imgResized = img.resize((int(mean_width), int(mean_height)), Image.ANTIALIAS)
-    imgResized.save(file, 'JPEG', quality=95)
-    print(img.filename.split("\\")[-1] + " is resized")
-
-def videoGenerator():
-    video_name = "MyFirstVideo.avi"
-
-    os.chdir("C:\\JetLearn Code\\OpenCV\\Lesson 8\\images")
-
-    images = []
-    for img in os.listdir('.'):
-        if img.endswith(".jpg") or img.endswith(".jpeg") or img.endswith("png"):
-            images.append(img)
-
-    print(images)
-
-    frame = cv2.imread(os.path.join(".", images[0]))
-    height, width, layers = frame.shape
-    video = cv2.VideoWriter(video_name, 0, 1, (width, height))
-    for image in images:
-        video.write(cv2.imread(os.path.join(".", image)))
-
-    cv2.destroyAllWindows()
-    video.release()
-
-videoGenerator()
+student2 = school("Emily", "11th", "Greenwood High")
+student2.showStudent()
+student2.set_name("Emma")
+student2.showStudent()
