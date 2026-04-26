@@ -18,14 +18,14 @@ fruits = ["apple", "kiwi", "banana", "watermelon", "date"]
 
 n = len(fruits)
 for i in range(1, n):
-        key = fruits[i]
-        print("Key", key)
-        j = i-1
-        while j >= 0 and len(key) < len(fruits[j]):
-            fruits[j+1] == fruits[j]
-            j -= 1
-            print(fruits)
-
-        fruits[j+1] == key
+                    
+    key = fruits[i]
+    print("Key", key)
+    j = i-1
+    while j >= 0 and len(key) < len(fruits[j]):
+        fruits[j+1] == fruits[j]
+        j -= 1
         print(fruits)
-        print("-"*20)
+    fruits[j+1] = key
+    print(fruits)
+    print("-" * 20)
