@@ -63,3 +63,32 @@ data_renamed = data.rename(
 )
 
 print(data_renamed.info())
+
+print(data["Age"].mean())
+
+print(data[["Age", "Fare"]].mean())
+
+print(data.agg{{
+    "Age": ["min", "max", "median"]
+}})
+
+print(data[["Sex", "Age"]].groupby("Sex").mean())
+
+print(data.groupby("Sex")["Age"].mean())
+
+print(data.groupby(["Sex", "Pclass"])["Fare"].mean())
+
+print(data["Pclass"].value_counts())
+
+print(data.groupby("Pclass")["Pclass"].count())
+
+data.sort_values(by = "Age")
+print(data[["Name", "Age"]].head())
+
+data.sort_values(by = ["Pclass", "Age"], ascending = False)
+
+data["NameLowercase"] = data["Name"].str.lower()
+
+titanic['Name'].str.split(",")
+titanic["Surname"] = titanic["Name"].str.split(",").str.get(0)
+titanic["Sex_short"] = titanic["Sex"].replace({"male": "M", "female": "F"})
