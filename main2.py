@@ -1,18 +1,28 @@
-from tkinter import *
+import matplotlib as plt
+import numpy as np
 
-top = Tk()
-top.title("Login Me")
-top.geometry("450x300")
-top.config(background="pink")
 
-user_name = Label(top, text="Username").place(x=40, y=60)
+subjects = ["Math", "Science", "History", "English", "Art"]
+bscore = [86, 93, 81, 79, 95]
+gscore = [89, 92, 79, 97, 87]
 
-user_password = Label(top, text="Password").place(x=40, y=100)
 
-submit_button = Button(top, text="Submit").place(x=40, y=130)
+x = np.arange(len(subjects))
+width = 0.35
+plt.bar(x - width/2, bscore, len())
 
-user_name_input_area = Entry(top, width = 30).place(x=110, y=60)
+plt.bar(x- width/2, bscore, width, label = 'Boys', color = 'lightblue')
+plt.bar(x- width/2, gscore, width, label = 'Girls', color = 'lightpink')
 
-user_password_input_area = Entry(top, show = "*", width = 30).place(x=110, y=100)
+plt.xlabel("Subjects")
+plt.ylabel("Grades")
+plt.title("Boys vs Girls grades")
+plt.xticks(x, subjects)
+plt.legend()
 
-top.mainloop()
+for i in range(len(subjects)):
+    plt.text(x[i] - width/2, bscore[i] + 1, str(bscore[i]), ha = 'center', fontweight = 'bold')
+    plt.text(x[i] - width/2, gscore[i] + 1, str(gscore[i]), ha = 'center', fontweight = 'bold')
+
+
+plt.show()
