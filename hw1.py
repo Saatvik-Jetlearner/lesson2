@@ -1,11 +1,13 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
-a = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-b = ([5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
-list1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-list2 = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
-print("Multiplication of np:", a * 2)
-print("Multiplication of list:", a * 2)
-print("Addition of lists:", list1 + list2)
-print("Addition of np:", a + b)
+x = np.arange(-20, 20, 0.1)
+m = input("Enter the slope of your equation")
+c = input("Enter the y-intercept of your equation")
+
+plt.plot(x, m*x + c, label = "mx + c function", color = "blue")
+plt.legend()
+plt.xlabel("X-Axis")
+plt.ylabel("Y-Axis")
+plt.show()
