@@ -1,4 +1,64 @@
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-covid_df = pd.read_csv("covid_data.csv")
-print(covid_df)
+data = pd.read_csv("Mall_Customers.csv")
+
+print(data.head())
+
+X = data[["Gender", "Age", "Annual Income (k$)" "Spending Score (1-100)"]]
+Y = data["CustomerID"]
+
+print(X.head())
+print(Y.head())
+
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, Y_train, Y_test = train_test_split(
+    X, Y, test_size=0.2, random_state=5)
+
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+
+standard_scaler = StandardScaler()
+standard_scaler.fit_transform(X_train)
+
+label_encoder = LabelEncoder()
+label_encoder.fit_transform(Y_train)
+
+from sklearn.neighbors import KNeighborsClassifier
+
+classifier = KNeighborsClassifier(n_neighbors = 5)
+classifier.fit(X_train, Y_train)
+
+standard_scaler.transform(X_test)
+y_pred = classifier.predict(X_test)
+
+label_encoder.transform(Y_test)
+
+from sklearn.metrics import classification_report, confusion_matrix
+
+matrix = confusion_matrix(Y_test, y_pred)
+
+sns.heatmap(matrix, annot = True, fmt = "d")
+plt.title("Confusion Matrix")
+
+classifier = KNeighborsClassifier(n_neighbours = 5)
+classifier.fit(X_train, Y_train)
+
+standard_scaler.transform(X_test)
+Y_pred = classifier.predict(X_test)
+
+label_encoder.transform(Y_test)
+
+from sklearn.metrics import classification_report, confusion_matrix
+
+matrix = confusion_matrix(Y_test, Y_pred)
+
+sns.heatmap(matrix, annot = True, fmt = "d")
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+print(classification_report(Y_test, Y_pred))
