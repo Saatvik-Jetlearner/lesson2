@@ -1,38 +1,44 @@
-import cv2
+import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-video_source = 'cars.mp4'
-cascade_path = 'cars.xml'
+data = pd.read_csv("car.csv")
+data.columns = ("sales", "maintenance", "doors", "persons", "boot_space", "safety", "class")
 
-cap = cv2.VideoCapture(video_source)
+print(data.head())
+print(data.describe())
+print(data.info())
 
-car_cascade = cv2.CascadeClassifier(cascade_path)
+from sklearn.preprocessing import LabelEncoder
+label_encoder = LabelEncoder()
 
+data["sales"] = label_encoder.fit_transform(data["sales"])
+data["maintenance"] = label_encoder.fit_transform(data["maintenance"])
+data["boot_space"] = label_encoder.fit_transform(data["boot_space"])
+data["safety"] = label_encoder.fit_transform(data["safety"])
+data["doors"] = label_encoder.fit_transform(data["doors"])
+data["persons"] = label_encoder.fit_transform(data["persons"])
+data["class"] = label_encoder.fit_transform(data["class"])
 
-if car_cascade.empty():
-    print('Error loading cascade classifier')
-    exit()
+X = data[["sales", "maintenance", "doors", "persons", "boot_space", "safety"]]
+Y = data["class"]
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        print("End of video stream or cannot read the video.")
+from sklearn.model_selection import train_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size = 0.2, random_state = 2)
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+from sklearn.tree import DecisionTreeClassifier
+classifier = DecisionTreeClassifier(criterion='entropy', random_state=0)
+classifier.fit(X_train, Y_train)
 
-    cars = car_cascade.detectMultiScale(gray, scaleFactor = 1.1, minNeighbors = 1, minSize = (30, 30))
+Y_pred = classifier.predict(X_test)
 
-    for (x, y, w, h) in cars:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-    
-    car_count = len(cars)
-    cv2.putText(frame, f'Car Count: {car_count}',
-                 (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    
-    cv2.imshow('Car Detection', frame)
+from sklearn.metrics import classification_report, confusion_matrix
+matrix = confusion_matrix(Y_test, Y_pred)
+sns.heatmap(matrix, annot = True, fmt = "d")
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
 
-    if cv2.waitKey(33) == 27:
-        break
-
-cap.release()
-cv2.destroyAllWindows()
+print(classification_report(Y_test, Y_pred))
