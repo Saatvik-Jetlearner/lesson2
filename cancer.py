@@ -22,16 +22,15 @@ import pandas as pd
 cancer_dict = datasets.load_breast_cancer()
 print(cancer_dict.keys())
 
-cancer_data = pd.DataFrame(cancer_dict.feature_names)
-cancer_data.columns = cancer_dict.feature_names
-cancer_data["isCancer"] = cancer_dict.target
+cancer_data = pd.DataFrame(cancer_dict.data, columns = cancer_dict.feature_names)
+
 
 print(cancer_data.info())
 print(cancer_data.head())
 
 Y = cancer_data["isCancer"]
-cancer_data.drop("isCancer", axis=1)
-X = cancer_data
+X = cancer_data.drop("isCancer", axis=1)
+
 
 X_train, X_test, Y_train, Y_test = train_test_split(
     X, Y, test_size=0.2, random_state=50
